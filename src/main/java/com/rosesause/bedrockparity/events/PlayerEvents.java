@@ -1,20 +1,24 @@
 package com.rosesause.bedrockparity.events;
 
 import com.rosesause.bedrockparity.BedrockParity;
-import com.rosesause.bedrockparity.setup.ParityBlocks;
+import com.rosesause.bedrockparity.block.ParityBlocks;
+import com.rosesause.bedrockparity.block.PotionCauldronBlock;
+import com.rosesause.bedrockparity.tile.PotionCauldronTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,34 +32,62 @@ public class PlayerEvents {
 
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        ItemStack itemMain = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
-        ItemStack itemOff = event.getPlayer().getHeldItem(Hand.OFF_HAND);
+        if(event.getWorld().isRemote)
+            return;
+
         BlockState state = event.getWorld().getBlockState(event.getPos());
-        PlayerEntity player = event.getPlayer();
-        LOGGER.info("CLICK");
-        //Cauldron
+
+        //TODO change this to a switch
         if(state.getBlock() == Blocks.CAULDRON) {
-            LOGGER.info("CAULDRON");
-            int level = state.get(CauldronBlock.LEVEL);
-            if (level == 0) {
-                if(hasItemInHands(player, new ItemStack(Items.LAVA_BUCKET)))
-                {
-                    LOGGER.info("CAULDRON Empty");
-                    //event.setResult(Event.Result.DENY);
-                    event.setCanceled(true);
-
-                    Hand handIn = whichHand(player, new ItemStack(Items.LAVA_BUCKET));
-                    setLavaCauldron(event.getWorld(), event.getPos(), event.getPlayer(), handIn);
-                    event.setCancellationResult(ActionResultType.func_233537_a_(event.getWorld().isRemote));
-                }
-
-            }
+            //Checks the main hand first and if its doesnt do nothin it goes to the off hand
+            ActionResultType result = onPlayerCauldronInteract(event, Hand.MAIN_HAND);
+            if(!result.isSuccessOrConsume())
+                result = onPlayerCauldronInteract(event, Hand.OFF_HAND);
+            if(result.isSuccessOrConsume())
+                event.setCancellationResult(result);
         }
 
     }
 
     /**
      *
+     */
+    private static ActionResultType onPlayerCauldronInteract(PlayerInteractEvent.RightClickBlock event, Hand hand) {
+        World world = event.getWorld();
+        BlockPos pos = event.getPos();
+        BlockState state = world.getBlockState(pos).getBlockState();
+        PlayerEntity player = event.getPlayer();
+        ItemStack stack = player.getHeldItem(hand);
+        Item item = stack.getItem();
+        int level = state.get(CauldronBlock.LEVEL);
+
+        if (level == 0) {
+            //Fill Cauldron with Lava
+            if(item == Items.LAVA_BUCKET) {
+                event.setCanceled(true);
+                setLavaCauldron(world, pos, player, hand);
+                return ActionResultType.func_233537_a_(event.getWorld().isRemote);
+            }
+
+            //Dye that water
+            if(item.isIn(Tags.Items.DYES)) {
+                event.setCanceled(true);
+                //setLavaCauldron(world, pos, player, hand);
+                return ActionResultType.func_233537_a_(event.getWorld().isRemote);
+            }
+
+            //You couldn't handle my strongest
+            if((item == Items.POTION && PotionUtils.getPotionFromItem(stack) != Potions.WATER)){
+                event.setCanceled(true);
+                setPotionCauldron(world, pos, state, player, hand, level);
+                return ActionResultType.func_233537_a_(event.getWorld().isRemote);
+            }
+        }
+        return ActionResultType.PASS;
+    }
+
+    /**
+     * Fills the cauldron with lava and sets the held item to
      */
     private static void setLavaCauldron(World world, BlockPos pos, PlayerEntity player, Hand hand) {
         if (!player.abilities.isCreativeMode)
@@ -66,22 +98,40 @@ public class PlayerEvents {
         world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
-
     /**
-     *
+     * TODO change block to dye cauldron
      */
-    private static boolean hasItemInHands(PlayerEntity player, ItemStack stack)
-    {
-        return player.getHeldItem(Hand.MAIN_HAND).isItemEqual(stack) || player.getHeldItem(Hand.OFF_HAND).isItemEqual(stack);
+    private static void setDyeCauldron(World world, BlockPos pos, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+        //switch (stack.getItem())
+        if (!player.abilities.isCreativeMode) {
+            stack.shrink(1);
+            player.setHeldItem(hand, stack);
+        }
+
+        player.addStat(Stats.USE_CAULDRON);
+        world.setBlockState(pos, ParityBlocks.LAVA_CAULDRON.get().getDefaultState());
+        world.playSound((PlayerEntity)null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
-    /**
-     *
-     */
-    private static Hand whichHand(PlayerEntity player, ItemStack stack) {
-        return player.getHeldItem(Hand.MAIN_HAND).isItemEqual(stack) ? Hand.MAIN_HAND : Hand.OFF_HAND;
-    }
+    private static void setPotionCauldron(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, int level) {
+        ItemStack stack = player.getHeldItem(hand);
+        if (!player.abilities.isCreativeMode) {
+            ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
+            player.addStat(Stats.USE_CAULDRON);
+            player.setHeldItem(hand, bottle);
+            if (player instanceof ServerPlayerEntity) {
+                ((ServerPlayerEntity) player).sendContainerToPlayer(player.container);
+            }
+        }
 
+        world.setBlockState(pos, ParityBlocks.POTION_CAULDRON.get().getDefaultState());
+        PotionCauldronTile potionCauldronTile = (PotionCauldronTile) world.getTileEntity(pos);
+        potionCauldronTile.setPotion(PotionUtils.getPotionFromItem(stack));
+        BlockState potionState = world.getBlockState(pos);
+        world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        ((PotionCauldronBlock)potionState.getBlock()).setWaterLevel(world, pos, potionState, level + 1);
+    }
 
 
 }

@@ -7,10 +7,13 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.data.LootTableProvider;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.*;
 import net.minecraft.loot.functions.CopyName;
 import net.minecraft.loot.functions.CopyNbt;
 import net.minecraft.loot.functions.SetContents;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,18 +43,27 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
 
     protected abstract void addTables();
 
-    protected LootTable.Builder createStandardTable(String name, Block block) {
+    protected LootTable.Builder tableForBlock(String name, Block block) {
         LootPool.Builder builder = LootPool.builder()
                 .name(name)
                 .rolls(ConstantRange.of(1))
-                .addEntry(ItemLootEntry.builder(block)
-                        .acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-                        .acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-                                .addOperation("inv", "BlockEntityTag.inv", CopyNbt.Action.REPLACE)
-                                .addOperation("energy", "BlockEntityTag.energy", CopyNbt.Action.REPLACE))
-                        .acceptFunction(SetContents.builderIn()
-                                .addLootEntry(DynamicLootEntry.func_216162_a(new ResourceLocation("minecraft", "contents"))))
-                );
+                .addEntry(ItemLootEntry.builder(block));
+        return LootTable.builder().addLootPool(builder);
+    }
+
+    protected LootTable.Builder tableForIItemProvider(String name, IItemProvider item) {
+        LootPool.Builder builder = LootPool.builder()
+                .name(name)
+                .rolls(ConstantRange.of(1))
+                .addEntry(ItemLootEntry.builder(item));
+        return LootTable.builder().addLootPool(builder);
+    }
+
+    protected LootTable.Builder tableForItem(String name, Item item) {
+        LootPool.Builder builder = LootPool.builder()
+                .name(name)
+                .rolls(ConstantRange.of(1))
+                .addEntry(ItemLootEntry.builder(item));
         return LootTable.builder().addLootPool(builder);
     }
 

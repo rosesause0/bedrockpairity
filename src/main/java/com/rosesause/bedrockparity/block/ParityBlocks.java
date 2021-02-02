@@ -1,6 +1,7 @@
-package com.rosesause.bedrockparity.setup;
+package com.rosesause.bedrockparity.block;
 
 import com.rosesause.bedrockparity.block.LavaCauldronBlock;
+import com.rosesause.bedrockparity.block.PotionCauldronBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -8,9 +9,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+
+import static com.rosesause.bedrockparity.BedrockParity.MODID;
 
 /**
  * Registration for mod blocks and block items
@@ -18,13 +23,19 @@ import java.util.function.ToIntFunction;
  */
 public class ParityBlocks {
 
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+
     public static final RegistryObject<LavaCauldronBlock> LAVA_CAULDRON =
             register("lava_cauldron", () -> new LavaCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE)
                             .setLightLevel(getLightValueCauldron())
                             .setRequiresTool()
                             .hardnessAndResistance(2.0F)
                             .notSolid()));
-
+    public static final RegistryObject<PotionCauldronBlock> POTION_CAULDRON =
+            register("potion_cauldron", () -> new PotionCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE)
+                    .setRequiresTool()
+                    .hardnessAndResistance(2.0F)
+                    .notSolid()));
 
     /**
      * Returns the light value based on the level in the cauldron.
@@ -36,7 +47,7 @@ public class ParityBlocks {
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
-        return Registration.BLOCKS.register(name, sup);
+        return BLOCKS.register(name, sup);
     }
 
 }
