@@ -5,6 +5,10 @@ bin
 .metadata
 .classpath
 .project
+README.txt
+LICENSE.txt
+changelog.txt
+
 
 # idea
 out
