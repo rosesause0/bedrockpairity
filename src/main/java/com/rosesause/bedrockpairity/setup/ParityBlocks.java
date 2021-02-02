@@ -16,7 +16,7 @@ import java.util.function.ToIntFunction;
  * Registration for mod blocks and block items
  * @see net.minecraft.block.Blocks for vanilla
  */
-public class PairityBlocks {
+public class ParityBlocks {
 
     public static final RegistryObject<LavaCauldronBlock> LAVA_CAULDRON =
             register("lava_cauldron", () -> new LavaCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE)

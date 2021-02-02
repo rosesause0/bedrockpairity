@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  * Registration for mod blocks and block items
  * @see net.minecraft.item.Items for vanilla
  */
-public class PairityItems {
+public class ParityItems {
 
     public static final RegistryObject<BlockItem> LAVA_CAULDRON = registerBlock(PairityBlocks.LAVA_CAULDRON, ItemGroup.DECORATIONS);
 

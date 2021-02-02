@@ -1,7 +1,7 @@
 package com.rosesause.bedrockpairity.events;
 
-import com.rosesause.bedrockpairity.BedrockPairity;
-import com.rosesause.bedrockpairity.setup.PairityBlocks;
+import com.rosesause.bedrockpairity.BedrockParity;
+import com.rosesause.bedrockpairity.setup.ParityBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod.EventBusSubscriber(modid = BedrockPairity.MODID)
+@Mod.EventBusSubscriber(modid = BedrockParity.MODID)
 public class PlayerEvents {
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -62,7 +62,7 @@ public class PlayerEvents {
             player.setHeldItem(hand, new ItemStack(Items.BUCKET));
 
         player.addStat(Stats.FILL_CAULDRON);
-        world.setBlockState(pos, PairityBlocks.LAVA_CAULDRON.get().getDefaultState());
+        world.setBlockState(pos, ParityBlocks.LAVA_CAULDRON.get().getDefaultState());
         world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 

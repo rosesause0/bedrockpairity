@@ -8,7 +8,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import static com.rosesause.bedrockpairity.BedrockPairity.MODID;
+import static com.rosesause.bedrockpairity.BedrockParity.MODID;
 
 public class Registration {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
@@ -21,9 +21,9 @@ public class Registration {
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        new PairityBlocks();
-        new PairityItems();
-        new PairityTiles();
+        new ParityBlocks();
+        new ParityItems();
+        new ParityTiles();
     }
 
 }
