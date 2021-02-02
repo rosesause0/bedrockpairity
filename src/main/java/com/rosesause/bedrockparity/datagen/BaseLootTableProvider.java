@@ -1,4 +1,4 @@
-package com.rosesause.bedrockpairity.datagen;
+package com.rosesause.bedrockparity.datagen;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

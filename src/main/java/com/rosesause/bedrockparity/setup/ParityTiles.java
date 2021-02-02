@@ -1,4 +1,4 @@
-package com.rosesause.bedrockpairity.setup;
+package com.rosesause.bedrockparity.setup;
 
 /**
  * Registration for mod blocks and block items

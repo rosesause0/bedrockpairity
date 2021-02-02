@@ -1,4 +1,4 @@
-package com.rosesause.bedrockpairity.setup;
+package com.rosesause.bedrockparity.setup;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;

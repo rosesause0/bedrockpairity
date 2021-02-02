@@ -1,4 +1,4 @@
-package com.rosesause.bedrockpairity.block;
+package com.rosesause.bedrockparity.block;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;

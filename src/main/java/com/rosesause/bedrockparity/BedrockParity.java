@@ -1,9 +1,7 @@
-package com.rosesause.bedrockpairity;
+package com.rosesause.bedrockparity;
 
-import com.rosesause.bedrockpairity.setup.Registration;
+import com.rosesause.bedrockparity.setup.Registration;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Mod("bedrockpairity")
 public class BedrockParity {

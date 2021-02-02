@@ -1,6 +1,6 @@
-package com.rosesause.bedrockpairity.setup;
+package com.rosesause.bedrockparity.setup;
 
-import com.rosesause.bedrockpairity.block.LavaCauldronBlock;
+import com.rosesause.bedrockparity.block.LavaCauldronBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

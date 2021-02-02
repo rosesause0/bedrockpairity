@@ -1,7 +1,7 @@
-package com.rosesause.bedrockpairity.events;
+package com.rosesause.bedrockparity.events;
 
-import com.rosesause.bedrockpairity.BedrockParity;
-import com.rosesause.bedrockpairity.setup.ParityBlocks;
+import com.rosesause.bedrockparity.BedrockParity;
+import com.rosesause.bedrockparity.setup.ParityBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
