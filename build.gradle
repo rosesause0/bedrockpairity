@@ -14,8 +14,8 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = '1.0'
-group = 'com.rosesause.bedrockpairity' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'bedrockpairity'
+group = 'com.rosesause.bedrockpairty' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'bedrockpairty'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -76,10 +76,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'bedrockpairty', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                examplemod {
+                bedrockpairty {
                     source sourceSets.main
                 }
             }
