@@ -1,7 +1,5 @@
 package com.rosesause.bedrockparity.block;
 
-import com.rosesause.bedrockparity.block.LavaCauldronBlock;
-import com.rosesause.bedrockparity.block.PotionCauldronBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-import static com.rosesause.bedrockparity.BedrockParity.MODID;
+import static com.rosesause.bedrockparity.BedrockParity.MOD_ID;
 
 /**
  * Registration for mod blocks and block items
@@ -23,7 +21,7 @@ import static com.rosesause.bedrockparity.BedrockParity.MODID;
  */
 public class ParityBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
 
     public static final RegistryObject<LavaCauldronBlock> LAVA_CAULDRON =
             register("lava_cauldron", () -> new LavaCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE)

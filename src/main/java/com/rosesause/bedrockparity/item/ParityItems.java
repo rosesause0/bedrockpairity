@@ -11,14 +11,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-import static com.rosesause.bedrockparity.BedrockParity.MODID;
+import static com.rosesause.bedrockparity.BedrockParity.MOD_ID;
 
 /**
  * Registration for mod blocks and block items
  * @see net.minecraft.item.Items for vanilla
  */
 public class ParityItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
     public static final RegistryObject<BlockItem> LAVA_CAULDRON = registerBlock(ParityBlocks.LAVA_CAULDRON, ItemGroup.DECORATIONS);
 

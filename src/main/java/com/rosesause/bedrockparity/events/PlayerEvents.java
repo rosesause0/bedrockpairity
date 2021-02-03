@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod.EventBusSubscriber(modid = BedrockParity.MODID)
+@Mod.EventBusSubscriber(modid = BedrockParity.MOD_ID)
 public class PlayerEvents {
 
     private static final Logger LOGGER = LogManager.getLogger();
