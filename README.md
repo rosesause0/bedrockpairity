@@ -5,8 +5,8 @@ Brings features and quirks from Bedrock to Java
 
 BLOCKS
 - Cauldron
-  - lava cauldron
-  - potion cauldron
+  - lava cauldron (needs particles)
+  - potion cauldron (needs particles)
   - dye cauldron
 
 
