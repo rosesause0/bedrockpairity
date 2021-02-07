@@ -120,8 +120,9 @@ Things i may implement but other mods already do
 - music disk hopper jukebox 
 - all entites blink
 
-Things that would be hell to implement
+## Things that would be hell to implement
 - cross platform play
 
-Things that would be cool as their own mod
+## Things that would be cool as their own mod
+### this is just for me to log ideas, no promises
 - brewing potions in a cauldron
