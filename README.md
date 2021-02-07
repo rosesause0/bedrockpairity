@@ -8,6 +8,9 @@ BLOCKS
   - lava cauldron (needs particles)
   - potion cauldron (needs particles)
   - dye cauldron
+- sugar cane bonemeal
+- Flower Bonemeal
+
 
 
 ## Planned Features
@@ -23,8 +26,6 @@ BLOCKS
 - bedrock pistons
 - bedrock Redstone dust
 - Fallen Trees
-- Flower Bonemeal
-- sugar cane bonemeal
 - snow melts in dry biomes
 - snow leaves and particles
 
