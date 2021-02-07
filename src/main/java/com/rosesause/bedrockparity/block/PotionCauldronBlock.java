@@ -33,7 +33,7 @@ public class PotionCauldronBlock extends CauldronBlock {
 
     public PotionCauldronBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, Integer.valueOf(0)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, Integer.valueOf(3)));
     }
 
     /**

@@ -41,7 +41,13 @@ public class PotionCauldronTile extends TileEntity {
     public void setPotion(Potion potionIn) {
         this.potion = potionIn;
         this.markDirty();
-        this.world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+        sendUpdates();
+    }
+
+    private void sendUpdates() {
+        this.markDirty();
+        world.markBlockRangeForRenderUpdate(pos, getBlockState(), getBlockState());
+        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
     }
 
     public Potion getPotion() {
@@ -64,5 +70,6 @@ public class PotionCauldronTile extends TileEntity {
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT nbt = pkt.getNbtCompound();
         read(getBlockState(), nbt);
+        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
     }
 }
