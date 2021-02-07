@@ -5,7 +5,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,6 +27,7 @@ public class ParityBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
 
+    //Regular blocks
     public static final RegistryObject<LavaCauldronBlock> LAVA_CAULDRON =
             register("lava_cauldron", () -> new LavaCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE)
                             .setLightLevel(getLightValueCauldron())
@@ -51,6 +56,20 @@ public class ParityBlocks {
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return BLOCKS.register(name, sup);
+    }
+
+    //TODO fix this
+    private static <T extends Block> T registerOverride(String name, String modid, T b) {
+        b.setRegistryName(new ResourceLocation(modid, name));
+        Block old = ForgeRegistries.BLOCKS.getValue(b.getRegistryName());
+        ForgeRegistries.BLOCKS.register(b);
+        ForgeRegistries.ITEMS.register(new BlockItem(b, new Item.Properties().group(old.asItem().getGroup())) {
+            @Override
+            public String getCreatorModId(ItemStack itemStack) {
+                return MOD_ID;
+            }
+        }.setRegistryName(b.getRegistryName()));
+        return b;
     }
 
 }
