@@ -4,6 +4,7 @@ import com.rosesause.bedrockparity.block.ParityBlocks;
 import com.rosesause.bedrockparity.datagen.ParityLootTableProvider;
 import com.rosesause.bedrockparity.datagen.ParityRecipes;
 import com.rosesause.bedrockparity.item.ParityItems;
+import com.rosesause.bedrockparity.tile.DyeCauldronTile;
 import com.rosesause.bedrockparity.tile.ParityTileEntityTypes;
 import com.rosesause.bedrockparity.tile.PotionCauldronTile;
 import net.minecraft.data.DataGenerator;
@@ -36,6 +37,7 @@ public class BedrockParity {
         @SubscribeEvent
         public static void registerBlockColors(ColorHandlerEvent.Block event) {
             event.getBlockColors().register((state, reader, pos, color) -> reader != null && pos != null ? ((PotionCauldronTile)reader.getTileEntity(pos)).getPotionColor() : -1, ParityBlocks.POTION_CAULDRON.get());
+            event.getBlockColors().register((state, reader, pos, color) -> reader != null && pos != null ? ((DyeCauldronTile)reader.getTileEntity(pos)).getDyeColor() : -1, ParityBlocks.DYE_CAULDRON.get());
         }
 
         @SubscribeEvent

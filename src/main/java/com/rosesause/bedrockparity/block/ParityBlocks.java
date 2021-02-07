@@ -34,6 +34,11 @@ public class ParityBlocks {
                     .setRequiresTool()
                     .hardnessAndResistance(2.0F)
                     .notSolid()));
+    public static final RegistryObject<DyeCauldronBlock> DYE_CAULDRON =
+            register("dye_cauldron", () -> new DyeCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE)
+                    .setRequiresTool()
+                    .hardnessAndResistance(2.0F)
+                    .notSolid()));
 
     /**
      * Returns the light value based on the level in the cauldron.

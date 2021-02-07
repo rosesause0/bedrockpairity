@@ -17,6 +17,8 @@ public class ParityTileEntityTypes {
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MOD_ID);
 
     public static final RegistryObject<TileEntityType<PotionCauldronTile>> POTION_CAULDRON_TILE = TILES.register(
-            "name", () -> TileEntityType.Builder.create(PotionCauldronTile::new, ParityBlocks.POTION_CAULDRON.get()).build(null));
+            "potion_cauldron", () -> TileEntityType.Builder.create(PotionCauldronTile::new, ParityBlocks.POTION_CAULDRON.get()).build(null));
+    public static final RegistryObject<TileEntityType<DyeCauldronTile>> DYE_CAULDRON_TILE = TILES.register(
+            "dye_cauldron", () -> TileEntityType.Builder.create(DyeCauldronTile::new, ParityBlocks.DYE_CAULDRON.get()).build(null));
 
 }

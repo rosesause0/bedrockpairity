@@ -1,14 +1,17 @@
 package com.rosesause.bedrockparity.events;
 
 import com.rosesause.bedrockparity.BedrockParity;
+import com.rosesause.bedrockparity.block.DyeCauldronBlock;
 import com.rosesause.bedrockparity.block.ParityBlocks;
 import com.rosesause.bedrockparity.block.PotionCauldronBlock;
+import com.rosesause.bedrockparity.tile.DyeCauldronTile;
 import com.rosesause.bedrockparity.tile.PotionCauldronTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -18,6 +21,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -69,17 +73,19 @@ public class PlayerEvents {
                 return ActionResultType.func_233537_a_(event.getWorld().isRemote);
             }
 
-            //Dye that water
-            if(item.isIn(Tags.Items.DYES)) {
-                event.setCanceled(true);
-                //setLavaCauldron(world, pos, player, hand);
-                return ActionResultType.func_233537_a_(event.getWorld().isRemote);
-            }
-
             //You couldn't handle my strongest
             if((item == Items.POTION && PotionUtils.getPotionFromItem(stack) != Potions.WATER)){
                 event.setCanceled(true);
                 setPotionCauldron(world, pos, state, player, hand, level);
+                return ActionResultType.func_233537_a_(event.getWorld().isRemote);
+            }
+        }
+        else if(level > 0)
+        {
+            //Dye that water
+            if(item.isIn(Tags.Items.DYES)) {
+                event.setCanceled(true);
+                setDyeCauldron(world, pos, level, player, hand);
                 return ActionResultType.func_233537_a_(event.getWorld().isRemote);
             }
         }
@@ -98,20 +104,20 @@ public class PlayerEvents {
         world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
-    /**
-     * TODO change block to dye cauldron
-     */
-    private static void setDyeCauldron(World world, BlockPos pos, PlayerEntity player, Hand hand) {
+    private static void setDyeCauldron(World world, BlockPos pos, int level, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        //switch (stack.getItem())
         if (!player.abilities.isCreativeMode) {
             stack.shrink(1);
-            player.setHeldItem(hand, stack);
         }
+        world.setBlockState(pos, ParityBlocks.DYE_CAULDRON.get().getDefaultState().with(DyeCauldronBlock.LEVEL, level));
+        DyeCauldronTile dyeCauldronTile = (DyeCauldronTile) world.getTileEntity(pos);
+        //Gets the color from the biome first
+        dyeCauldronTile.addColorToCauldron(BiomeColors.getWaterColor(world, pos));
+        //then the color from the dye
+        dyeCauldronTile.addColorToCauldron(((DyeItem) stack.getItem()).getDyeColor().getColorValue());
 
         player.addStat(Stats.USE_CAULDRON);
-        world.setBlockState(pos, ParityBlocks.LAVA_CAULDRON.get().getDefaultState());
-        world.playSound((PlayerEntity)null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     private static void setPotionCauldron(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, int level) {
