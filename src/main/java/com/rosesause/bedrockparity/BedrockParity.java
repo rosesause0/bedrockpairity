@@ -2,8 +2,10 @@ package com.rosesause.bedrockparity;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.mojang.brigadier.CommandDispatcher;
 import com.rosesause.bedrockparity.block.ParityBlocks;
 import com.rosesause.bedrockparity.block.ParityJukeboxBlock;
+import com.rosesause.bedrockparity.commands.ParityGameRules;
 import com.rosesause.bedrockparity.datagen.ParityLootTableProvider;
 import com.rosesause.bedrockparity.datagen.ParityRecipes;
 import com.rosesause.bedrockparity.item.ParityItems;
@@ -19,6 +21,8 @@ import net.minecraft.block.SnowBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.impl.GameRuleCommand;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tileentity.EnchantingTableTileEntity;
 import net.minecraft.tileentity.JukeboxTileEntity;
@@ -28,10 +32,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.FoliageColors;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockDisplayReader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -40,10 +46,15 @@ import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -53,6 +64,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -61,16 +73,20 @@ public class BedrockParity {
 
     private static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "bedrockparity";
-
+    public static boolean gameRuleRegistered = false;
 
     public BedrockParity() {
         ParityBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityTileEntityTypes.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityLootModifiers.GLM.register(FMLJavaModLoadingContext.get().getModEventBus());
-        //CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        MinecraftForge.EVENT_BUS.register(new ParityGameRules.GameRuleEvents());
     }
 
+    public void setup(final FMLCommonSetupEvent event) {
+        ParityGameRules.registerGameRules();
+    }
 
     @Mod.EventBusSubscriber(modid = BedrockParity.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeEvents {
@@ -86,6 +102,14 @@ public class BedrockParity {
                 );
             }
         }
+
+        @SubscribeEvent
+        public static void init(final FMLServerAboutToStartEvent event){
+            CommandDispatcher<CommandSource> dispatcher = event.getServer().getCommandManager().getDispatcher();
+            GameRuleCommand.register(dispatcher);
+        }
+
+        public static class RegisterGameRuleEvent extends Event { }
     }
 
     @Mod.EventBusSubscriber(modid = BedrockParity.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -138,6 +162,8 @@ public class BedrockParity {
             //generator.addProvider(new ParityRecipes(generator));
 
         }
+
+
 
     }
 
