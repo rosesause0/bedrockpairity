@@ -1,15 +1,16 @@
 package com.rosesause.bedrockparity.block;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.EnchantingTableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -45,6 +46,12 @@ public class ParityBlocks {
                     .hardnessAndResistance(2.0F)
                     .notSolid()));
 
+    //OVERRIDES
+    public static final Block LIGHT_ENCHANTING_TABLE =
+            registerOverride("enchanting_table", "minecraft", new EnchantingTableBlock(AbstractBlock.Properties.from(Blocks.ENCHANTING_TABLE)
+                    .setLightLevel((state) -> 12)));
+    public static final Block PARITY_JUKEBOX = registerOverride("jukebox", "minecraft", new ParityJukeboxBlock());
+
     /**
      * Returns the light value based on the level in the cauldron.
      */
@@ -58,7 +65,7 @@ public class ParityBlocks {
         return BLOCKS.register(name, sup);
     }
 
-    //TODO fix this
+    //TODO fix this?? maybe...
     private static <T extends Block> T registerOverride(String name, String modid, T b) {
         b.setRegistryName(new ResourceLocation(modid, name));
         Block old = ForgeRegistries.BLOCKS.getValue(b.getRegistryName());
