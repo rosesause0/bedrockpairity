@@ -5,28 +5,27 @@ Brings features and quirks from Bedrock to Java
 
 BLOCKS
 - Cauldron
-  - lava cauldron
-  - potion cauldron
+  - lava cauldron (needs particles)
+  - potion cauldron (needs particles)
   - dye cauldron
-
+- sugar cane bonemeal
+- (WIP) Flower Bonemeal
+- enchanting table producing a light level of 12
+- grass paths drop themselves with silk touch
+- (WIP) note particles when jukebox is playing music
+- Hopper can interact with jukebox
 
 ## Planned Features
 
 BLOCKS
 - redyable wool and beds
 - buttons on fences
-- enchanting table producing a light level of 12
 - more biome water colors
 - grass has random height 
-- paths drop themselves with silk touch
-- note particles when jukebox is playing music 
 - bedrock pistons
 - bedrock Redstone dust
 - Fallen Trees
-- Flower Bonemeal
-- sugar cane bonemeal
-- snow melts in dry biomes
-- snow leaves and particles
+- snow melts in dry biomes //This >:(
 
 ITEMS
 - different item models 
@@ -72,7 +71,7 @@ COMMANDS
     - tntexplodes
     - functioncommandlimit
     - showtags
-- teleport has a bool to cancel if theres a block  in the way
+- teleport has a bool to cancel if theres a block in the way
 - a lot more just see screenshots 
 
 SOUNDS
@@ -117,7 +116,6 @@ Things i may implement but other mods already do
 - moveable tileentites
 - food edible in peaceful
 - biome color blocks are block by block 
-- music disk hopper jukebox 
 - all entites blink
 
 ## Things that would be hell to implement

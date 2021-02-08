@@ -6,15 +6,10 @@ import com.rosesause.bedrockparity.block.ParityBlocks;
 import com.rosesause.bedrockparity.block.PotionCauldronBlock;
 import com.rosesause.bedrockparity.tile.DyeCauldronTile;
 import com.rosesause.bedrockparity.tile.PotionCauldronTile;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CauldronBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.stats.Stats;
@@ -43,10 +38,7 @@ public class PlayerEvents {
 
         //TODO change this to a switch
         if(state.getBlock() == Blocks.CAULDRON) {
-            //Checks the main hand first and if its doesnt do nothin it goes to the off hand
-            ActionResultType result = onPlayerCauldronInteract(event, Hand.MAIN_HAND);
-            if(!result.isSuccessOrConsume())
-                result = onPlayerCauldronInteract(event, Hand.OFF_HAND);
+            ActionResultType result = onPlayerCauldronInteract(event);
             if(result.isSuccessOrConsume())
                 event.setCancellationResult(result);
         }
@@ -56,12 +48,12 @@ public class PlayerEvents {
     /**
      *
      */
-    private static ActionResultType onPlayerCauldronInteract(PlayerInteractEvent.RightClickBlock event, Hand hand) {
+    private static ActionResultType onPlayerCauldronInteract(PlayerInteractEvent.RightClickBlock event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         BlockState state = world.getBlockState(pos).getBlockState();
         PlayerEntity player = event.getPlayer();
-        ItemStack stack = player.getHeldItem(hand);
+        ItemStack stack = event.getItemStack();
         Item item = stack.getItem();
         int level = state.get(CauldronBlock.LEVEL);
 
@@ -69,14 +61,14 @@ public class PlayerEvents {
             //Fill Cauldron with Lava
             if(item == Items.LAVA_BUCKET) {
                 event.setCanceled(true);
-                setLavaCauldron(world, pos, player, hand);
+                setLavaCauldron(world, pos, player, event.getHand());
                 return ActionResultType.func_233537_a_(event.getWorld().isRemote);
             }
 
             //You couldn't handle my strongest
             if((item == Items.POTION && PotionUtils.getPotionFromItem(stack) != Potions.WATER)){
                 event.setCanceled(true);
-                setPotionCauldron(world, pos, state, player, hand, level);
+                setPotionCauldron(world, pos, state, player, event.getHand(), level);
                 return ActionResultType.func_233537_a_(event.getWorld().isRemote);
             }
         }
@@ -85,7 +77,7 @@ public class PlayerEvents {
             //Dye that water
             if(item.isIn(Tags.Items.DYES)) {
                 event.setCanceled(true);
-                setDyeCauldron(world, pos, level, player, hand);
+                setDyeCauldron(world, pos, level, player, event.getHand());
                 return ActionResultType.func_233537_a_(event.getWorld().isRemote);
             }
         }
