@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "enchantments": [
+          {
+            "enchantment": "minecraft:silk_touch",
+            "levels": 1
+          }
+        ]
+      }
+    },
+    {
+      "condition": "minecraft:block_state_property",
+      "block": "minecraft:grass_path"
+    }
+  ],
+  "silkItem": "minecraft:grass_path",
+  "type": "bedrockparity:silk_touch_grass_path"
+}
