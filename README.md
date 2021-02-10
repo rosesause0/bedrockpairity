@@ -24,6 +24,8 @@ COMMANDS
     - tntExplodes
     - commandBlocksEnabled
 
+GAMEPLAY
+- fire aspect lights tnt and campfires
 
 ## Planned Features
 
@@ -71,12 +73,6 @@ ENTITES
 - BABY SQUIDS
 - Bedrock wither
 
-COMMANDS
-- gamerules
-  - more
-    - functioncommandlimit
-    - showtags
-
 SOUNDS
 - dropping an items makes a popping sound
 - hitting the air makes an attack sound 
@@ -84,7 +80,6 @@ SOUNDS
 - volume sliders play a sample of the relavant sound when adjusted
 
 GAMEPLAY
-- fire aspect lights tnt and campfires
 - splash potions of water extingush fire/campfire
 - potion of decay
 - clowds tinted red at sunset

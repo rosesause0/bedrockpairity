@@ -7,11 +7,14 @@ import com.rosesause.bedrockparity.block.PotionCauldronBlock;
 import com.rosesause.bedrockparity.tileentity.DyeCauldronTile;
 import com.rosesause.bedrockparity.tileentity.PotionCauldronTile;
 import net.minecraft.block.*;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +27,8 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Random;
+
 @Mod.EventBusSubscriber(modid = BedrockParity.MOD_ID)
 public class PlayerEvents {
 
@@ -31,18 +36,30 @@ public class PlayerEvents {
 
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if(event.getWorld().isRemote)
-            return;
+
 
         BlockState state = event.getWorld().getBlockState(event.getPos());
 
-        //TODO change this to a switch
         if(state.getBlock() == Blocks.CAULDRON) {
+            if(event.getWorld().isRemote)
+                return;
             ActionResultType result = onPlayerCauldronInteract(event);
             if(result.isSuccessOrConsume())
                 event.setCancellationResult(result);
         }
+
+        if (EnchantmentHelper.getEnchantments(event.getItemStack()).containsKey(Enchantments.FIRE_ASPECT)) {
+            ActionResultType result = fireAspectInteract(event);
+            if(result.isSuccessOrConsume())
+                event.setCancellationResult(result);
+        }
     }
+
+/*    @SubscribeEvent
+    public static void onPlayerLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        if(event.getWorld().isRemote)
+            return;
+    }*/
 
     /**
      *
@@ -130,5 +147,29 @@ public class PlayerEvents {
         ((PotionCauldronBlock)potionState.getBlock()).setWaterLevel(world, pos, potionState, level + 1);
     }
 
+    /**
+     *
+     */
+    private static ActionResultType fireAspectInteract(PlayerInteractEvent.RightClickBlock event) {
+        Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+        if (block == Blocks.TNT) {
+            if(event.getWorld().isRemote)
+                return ActionResultType.PASS;
+            event.setCanceled(true);
+            event.getWorld().setBlockState(event.getPos(), Blocks.AIR.getDefaultState(), 11);
+            block.catchFire(event.getWorld().getBlockState(event.getPos()), event.getWorld(), event.getPos(), event.getFace(), event.getPlayer());
+            return ActionResultType.SUCCESS;
+        } else if (block == Blocks.CAMPFIRE && !event.getWorld().getBlockState(event.getPos()).get(BlockStateProperties.LIT)) {
+            if (CampfireBlock.canBeLit(event.getWorld().getBlockState(event.getPos()))) {
+                event.getWorld().playSound(event.getPlayer(), event.getPos(), SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, new Random().nextFloat() * 0.4F + 0.8F);
+                if(event.getWorld().isRemote)
+                    return ActionResultType.PASS;
+                event.setCanceled(true);
+                event.getWorld().setBlockState(event.getPos(), event.getWorld().getBlockState(event.getPos()).with(BlockStateProperties.LIT, Boolean.TRUE));
+                return ActionResultType.SUCCESS;
+            }
+        }
+        return ActionResultType.PASS;
+    }
 
 }
