@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.rosesause.bedrockparity.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "bedrockparity.refmap.json",
+  "mixins": [
+    "MixinCommandBlockLogic",
+    "MixinServerPlayNetHandler",
+    "MixinSnowBlock"
+  ],
+  "minVersion": "0.8"
+}
