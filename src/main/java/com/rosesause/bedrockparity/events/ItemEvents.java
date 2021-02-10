@@ -1,7 +1,10 @@
 package com.rosesause.bedrockparity.events;
 
 import com.rosesause.bedrockparity.BedrockParity;
-import net.minecraft.block.*;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowerBlock;
+import net.minecraft.block.GrassBlock;
+import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -9,15 +12,11 @@ import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = BedrockParity.MOD_ID)
 public class ItemEvents {
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     @SubscribeEvent
     public static void onUseBoneMeal(BonemealEvent event) {
@@ -36,9 +35,9 @@ public class ItemEvents {
      */
     public static void boneMealSugarCane(BonemealEvent event) {
         if (event.getWorld().isAirBlock(event.getPos().up())) {
-            int i;
-            for(i = 1; event.getWorld().getBlockState(event.getPos().down(i)).isIn(event.getBlock().getBlock()); ++i) {
-            }
+            int i = 1;
+            while(event.getWorld().getBlockState(event.getPos().down(i)).isIn(event.getBlock().getBlock()))
+                i++;
             if (i <= 3) {
                 int j = event.getBlock().get(SugarCaneBlock.AGE) + MathHelper.nextInt(event.getWorld().rand, 2, 5);
                 if(j > 15)
@@ -47,9 +46,9 @@ public class ItemEvents {
                     event.setResult(Event.Result.ALLOW);
                     if (j == 15) {
                         event.getWorld().setBlockState(event.getPos().up(), Blocks.SUGAR_CANE.getDefaultState());
-                        event.getWorld().setBlockState(event.getPos(), event.getBlock().with(SugarCaneBlock.AGE, Integer.valueOf(0)), 4);
+                        event.getWorld().setBlockState(event.getPos(), event.getBlock().with(SugarCaneBlock.AGE, 0), 4);
                     } else {
-                        event.getWorld().setBlockState(event.getPos(), event.getBlock().with(SugarCaneBlock.AGE, Integer.valueOf(j)), 4);
+                        event.getWorld().setBlockState(event.getPos(), event.getBlock().with(SugarCaneBlock.AGE, j), 4);
                     }
                 }
             }

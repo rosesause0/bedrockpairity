@@ -1,4 +1,4 @@
-package com.rosesause.bedrockparity.tile;
+package com.rosesause.bedrockparity.tileentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;

@@ -5,8 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,8 +12,6 @@ import java.util.stream.StreamSupport;
 import static com.rosesause.bedrockparity.BedrockParity.MOD_ID;
 
 public class ParityLootTables {
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public static class Blocks extends BlockLootTables {
 

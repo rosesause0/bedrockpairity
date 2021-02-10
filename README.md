@@ -1,5 +1,5 @@
 # bedrockparity
-Brings features and quirks from Bedrock to Java
+Bringing features and quirks from Bedrock to Java
 
 ## Implemented Features
 
@@ -8,8 +8,8 @@ BLOCKS
   - lava cauldron (needs particles)
   - potion cauldron (needs particles)
   - dye cauldron
-- sugar cane bonemeal
-- (WIP) Flower Bonemeal
+- sugar cane bone meal
+- (WIP) Flower Bone meal
 - enchanting table producing a light level of 12
 - grass paths drop themselves with silk touch
 - (WIP) note particles when jukebox is playing music

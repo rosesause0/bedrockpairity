@@ -1,4 +1,4 @@
-package com.rosesause.bedrockparity.tile;
+package com.rosesause.bedrockparity.tileentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.DyeableArmorItem;
@@ -7,9 +7,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 
 import javax.annotation.Nullable;
 
@@ -20,7 +17,6 @@ import javax.annotation.Nullable;
 public class DyeCauldronTile extends TileEntity {
 
     private int dyeColor;
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public DyeCauldronTile() {
         super(ParityTileEntityTypes.DYE_CAULDRON_TILE.get());
@@ -50,7 +46,7 @@ public class DyeCauldronTile extends TileEntity {
     }
 
     public float[] getColorValues(int color) {
-        return new float[]{((color & 16711680) >> 16) / 255.0F, ((color & '\uff00') >> 8) / 255.0F, ((color & 255) >> 0) / 255.0F};
+        return new float[]{((color & 16711680) >> 16) / 255.0F, ((color & '\uff00') >> 8) / 255.0F, ((color & 255)) / 255.0F};
     }
 
     private int addColor(int color, int addColor) {
@@ -93,7 +89,6 @@ public class DyeCauldronTile extends TileEntity {
     }
 
     /**
-     * TODO Clean this tf up
      * @see net.minecraft.item.IDyeableArmorItem
      */
     public void addColorToCauldron(int color) {

@@ -10,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  *
  */
@@ -17,13 +19,14 @@ public class LavaCauldronBlock extends CauldronBlock {
 
     public LavaCauldronBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, Integer.valueOf(3)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, 3));
     }
 
     /**
      * Does less damage and fire ticks than regular lava
      */
     @Override
+    @ParametersAreNonnullByDefault
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         int i = state.get(LEVEL);
         float f = (float)pos.getY() + (6.0F + (float)(3 * i)) / 16.0F;
@@ -66,7 +69,7 @@ public class LavaCauldronBlock extends CauldronBlock {
 
                     player.addStat(Stats.USE_CAULDRON);
                     this.setWaterLevel(worldIn, pos, state, 0);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                 }
 
@@ -84,7 +87,7 @@ public class LavaCauldronBlock extends CauldronBlock {
 
                     player.addStat(Stats.USE_CAULDRON);
                     this.setWaterLevel(worldIn, pos, state, 0);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound( null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                 }
                 return ActionResultType.func_233537_a_(worldIn.isRemote);

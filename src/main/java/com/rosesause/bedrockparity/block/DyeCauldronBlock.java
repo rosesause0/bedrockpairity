@@ -1,6 +1,6 @@
 package com.rosesause.bedrockparity.block;
 
-import com.rosesause.bedrockparity.tile.DyeCauldronTile;
+import com.rosesause.bedrockparity.tileentity.DyeCauldronTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
@@ -25,7 +25,7 @@ public class DyeCauldronBlock extends CauldronBlock {
 
     public DyeCauldronBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, Integer.valueOf(3)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, 3));
     }
 
     /**
@@ -71,7 +71,7 @@ public class DyeCauldronBlock extends CauldronBlock {
 
                     player.addStat(Stats.USE_CAULDRON);
                     this.setWaterLevel(worldIn, pos, state, 0);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                 }
                 return ActionResultType.func_233537_a_(worldIn.isRemote);
@@ -84,10 +84,7 @@ public class DyeCauldronBlock extends CauldronBlock {
                     dyeCauldronTile.addColorToCauldron(((DyeItem) item).getDyeColor().getColorValue());
 
                     player.addStat(Stats.USE_CAULDRON);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    //worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 2);
-                    //worldIn.markBlockRangeForRenderUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos));
-                    //worldIn.mark
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 }
                 return ActionResultType.func_233537_a_(worldIn.isRemote);
             } else if (item instanceof DyeableArmorItem) {
@@ -107,7 +104,7 @@ public class DyeCauldronBlock extends CauldronBlock {
                     }
 
                     player.addStat(Stats.USE_CAULDRON);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     if(i-1 == 0)
                         worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                     else

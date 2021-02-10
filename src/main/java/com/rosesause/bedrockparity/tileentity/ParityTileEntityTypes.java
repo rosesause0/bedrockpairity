@@ -1,12 +1,7 @@
-package com.rosesause.bedrockparity.tile;
+package com.rosesause.bedrockparity.tileentity;
 
+import com.google.common.collect.ImmutableSet;
 import com.rosesause.bedrockparity.block.ParityBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.EnchantingTableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -32,9 +27,13 @@ public class ParityTileEntityTypes {
 
     private static <T extends TileEntity> TileEntityType<T> registerOverride(String name, String modid, TileEntityType<T> tile) {
         tile.setRegistryName(new ResourceLocation(modid, name));
-        TileEntityType<?> old = ForgeRegistries.TILE_ENTITIES.getValue(tile.getRegistryName());
         ForgeRegistries.TILE_ENTITIES.register(tile);
         return tile;
+    }
+
+    public static void editTileEntities() {
+        TileEntityType.ENCHANTING_TABLE.validBlocks = ImmutableSet.of(ParityBlocks.LIGHT_ENCHANTING_TABLE);
+        TileEntityType.JUKEBOX.validBlocks = ImmutableSet.of(ParityBlocks.PARITY_JUKEBOX);
     }
 
 }

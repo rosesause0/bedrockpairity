@@ -4,8 +4,8 @@ import com.rosesause.bedrockparity.BedrockParity;
 import com.rosesause.bedrockparity.block.DyeCauldronBlock;
 import com.rosesause.bedrockparity.block.ParityBlocks;
 import com.rosesause.bedrockparity.block.PotionCauldronBlock;
-import com.rosesause.bedrockparity.tile.DyeCauldronTile;
-import com.rosesause.bedrockparity.tile.PotionCauldronTile;
+import com.rosesause.bedrockparity.tileentity.DyeCauldronTile;
+import com.rosesause.bedrockparity.tileentity.PotionCauldronTile;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -67,7 +67,7 @@ public class PlayerEvents {
             //You couldn't handle my strongest
             if((item == Items.POTION && PotionUtils.getPotionFromItem(stack) != Potions.WATER)){
                 event.setCanceled(true);
-                setPotionCauldron(world, pos, state, player, event.getHand(), level);
+                setPotionCauldron(world, pos, player, event.getHand(), level);
                 return ActionResultType.func_233537_a_(event.getWorld().isRemote);
             }
         }
@@ -92,7 +92,7 @@ public class PlayerEvents {
 
         player.addStat(Stats.FILL_CAULDRON);
         world.setBlockState(pos, ParityBlocks.LAVA_CAULDRON.get().getDefaultState());
-        world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     private static void setDyeCauldron(World world, BlockPos pos, int level, PlayerEntity player, Hand hand) {
@@ -108,10 +108,10 @@ public class PlayerEvents {
         dyeCauldronTile.addColorToCauldron(((DyeItem) stack.getItem()).getDyeColor().getColorValue());
 
         player.addStat(Stats.USE_CAULDRON);
-        world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
-    private static void setPotionCauldron(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, int level) {
+    private static void setPotionCauldron(World world, BlockPos pos, PlayerEntity player, Hand hand, int level) {
         ItemStack stack = player.getHeldItem(hand);
         if (!player.abilities.isCreativeMode) {
             ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
@@ -126,7 +126,7 @@ public class PlayerEvents {
         PotionCauldronTile potionCauldronTile = (PotionCauldronTile) world.getTileEntity(pos);
         potionCauldronTile.setPotion(PotionUtils.getPotionFromItem(stack));
         BlockState potionState = world.getBlockState(pos);
-        world.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
         ((PotionCauldronBlock)potionState.getBlock()).setWaterLevel(world, pos, potionState, level + 1);
     }
 

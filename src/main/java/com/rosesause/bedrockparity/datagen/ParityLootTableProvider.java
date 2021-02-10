@@ -7,8 +7,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.loot.*;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +24,7 @@ import static com.rosesause.bedrockparity.BedrockParity.MOD_ID;
  */
 public class ParityLootTableProvider extends LootTableProvider {
 
-    private static final Logger LOGGER = LogManager.getLogger();
-    //
+
     private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>>
             lootTableGenerators = ImmutableList.of(
             Pair.of(ParityLootTables.Blocks::new, LootParameterSets.BLOCK)

@@ -1,6 +1,6 @@
 package com.rosesause.bedrockparity.block;
 
-import com.rosesause.bedrockparity.tile.PotionCauldronTile;
+import com.rosesause.bedrockparity.tileentity.PotionCauldronTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
@@ -10,9 +10,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -33,7 +31,7 @@ public class PotionCauldronBlock extends CauldronBlock {
 
     public PotionCauldronBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, Integer.valueOf(3)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(LEVEL, 3));
     }
 
     /**
@@ -80,7 +78,7 @@ public class PotionCauldronBlock extends CauldronBlock {
 
                     player.addStat(Stats.USE_CAULDRON);
                     this.setWaterLevel(worldIn, pos, state, 0);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                 }
 
@@ -101,7 +99,7 @@ public class PotionCauldronBlock extends CauldronBlock {
                     }
 
                     player.addStat(Stats.USE_CAULDRON);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     if(i-1 == 0)
                         worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                     else
@@ -123,7 +121,7 @@ public class PotionCauldronBlock extends CauldronBlock {
 
                         potionCauldronTile.setPotion(PotionUtils.getPotionFromItem(itemstack));
 
-                        worldIn.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         this.setWaterLevel(worldIn, pos, state, i + 1);
                     }
 
@@ -146,7 +144,7 @@ public class PotionCauldronBlock extends CauldronBlock {
                     }
 
                     player.addStat(Stats.USE_CAULDRON);
-                    worldIn.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     if(i-1 == 0)
                         worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                     else
