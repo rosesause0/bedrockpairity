@@ -80,7 +80,6 @@ SOUNDS
 - volume sliders play a sample of the relavant sound when adjusted
 
 GAMEPLAY
-- splash potions of water extingush fire/campfire
 - potion of decay
 - clowds tinted red at sunset
 - variable rain
