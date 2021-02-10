@@ -14,6 +14,16 @@ BLOCKS
 - grass paths drop themselves with silk touch
 - (WIP) note particles when jukebox is playing music
 - Hopper can interact with jukebox
+- snow melts in biomes with a tempature higher than 1.0f
+
+COMMANDS
+- gamerules
+  - certain are available without cheats
+  - more
+    - pvp
+    - tntExplodes
+    - commandBlocksEnabled
+
 
 ## Planned Features
 
@@ -25,7 +35,6 @@ BLOCKS
 - bedrock pistons
 - bedrock Redstone dust
 - Fallen Trees
-- snow melts in dry biomes //This >:(
 
 ITEMS
 - different item models 
@@ -64,15 +73,9 @@ ENTITES
 
 COMMANDS
 - gamerules
-  - certain are available without cheats 
   - more
-    - pvp
-    - commandblocks
-    - tntexplodes
     - functioncommandlimit
     - showtags
-- teleport has a bool to cancel if theres a block in the way
-- a lot more just see screenshots 
 
 SOUNDS
 - dropping an items makes a popping sound

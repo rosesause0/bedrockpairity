@@ -42,7 +42,6 @@ public class PlayerEvents {
             if(result.isSuccessOrConsume())
                 event.setCancellationResult(result);
         }
-
     }
 
     /**
