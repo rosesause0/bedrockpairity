@@ -26,6 +26,10 @@ COMMANDS
 
 GAMEPLAY
 - fire aspect lights tnt and campfires
+- potion of decay
+
+WORLDGEN
+- potion cauldron spawn in witch huts
 
 ## Planned Features
 
@@ -80,7 +84,6 @@ SOUNDS
 - volume sliders play a sample of the relavant sound when adjusted
 
 GAMEPLAY
-- potion of decay
 - clowds tinted red at sunset
 - variable rain
 - eating, blocking, using a bow, crossbow or trident or sneaking while sprinting makes the player stop sprinting.

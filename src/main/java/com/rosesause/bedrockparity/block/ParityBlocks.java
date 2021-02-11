@@ -51,7 +51,7 @@ public class ParityBlocks {
 
     //OVERRIDE BLOCKS
     public static final Block LIGHT_ENCHANTING_TABLE = registerOverride("enchanting_table", new EnchantingTableBlock(AbstractBlock.Properties.from(Blocks.ENCHANTING_TABLE).setLightLevel((state) -> 12)));
-    public static final Block PARITY_JUKEBOX = registerOverride("jukebox", new ParityJukeboxBlock());
+    public static final Block PARITY_JUKEBOX =         registerOverride("jukebox", new ParityJukeboxBlock());
 
     /**
      * Returns the light value based on the level in the cauldron.

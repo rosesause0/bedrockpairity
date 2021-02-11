@@ -9,6 +9,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nullable;
 
@@ -18,16 +19,15 @@ import javax.annotation.Nullable;
  */
 public class PotionCauldronTile extends TileEntity {
 
-    private Potion potion;
+    private Potion potion = Potions.EMPTY;
 
     public PotionCauldronTile() {
         super(ParityTileEntityTypes.POTION_CAULDRON_TILE.get());
-        this.potion = Potions.EMPTY;
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
+        compound = super.write(compound);
         compound.putString("Potion", ForgeRegistries.POTION_TYPES.getKey(potion).toString());
         return compound;
     }
@@ -40,14 +40,15 @@ public class PotionCauldronTile extends TileEntity {
 
     public void setPotion(Potion potionIn) {
         this.potion = potionIn;
-        this.markDirty();
-        sendUpdates();
+        updateTile();
     }
 
-    private void sendUpdates() {
+    public void updateTile() {
         this.markDirty();
-        world.markBlockRangeForRenderUpdate(pos, getBlockState(), getBlockState());
-        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+        if(world != null) {
+            world.markBlockRangeForRenderUpdate(pos, getBlockState(), getBlockState());
+            world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+        }
     }
 
     public Potion getPotion() {
@@ -55,21 +56,30 @@ public class PotionCauldronTile extends TileEntity {
     }
 
     public int getPotionColor() {
+        StringBuilder str = new StringBuilder("effects:");
+        for(int i = 0; i < potion.getEffects().size(); i ++){
+            str.append("\n");
+            str.append(potion.getEffects().get(i));
+        }
+        LogManager.getLogger().debug("\npotion:\n" + str + "\ncolor:" + PotionUtils.getPotionColor(potion));
         return PotionUtils.getPotionColor(potion);
     }
 
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT nbt = new CompoundNBT();
-        this.write(nbt);
-        return new SUpdateTileEntityPacket(this.pos, -1, nbt);
+        return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT nbt = pkt.getNbtCompound();
         read(getBlockState(), nbt);
-        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+
     }
 }

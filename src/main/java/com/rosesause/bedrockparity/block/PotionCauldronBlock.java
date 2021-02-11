@@ -4,6 +4,7 @@ import com.rosesause.bedrockparity.tileentity.PotionCauldronTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -164,4 +165,5 @@ public class PotionCauldronBlock extends CauldronBlock {
     public void fillWithRain(World worldIn, BlockPos pos) {
 
     }
+
 }

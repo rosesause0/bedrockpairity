@@ -7,6 +7,7 @@ import com.rosesause.bedrockparity.commands.ParityGameRules;
 import com.rosesause.bedrockparity.datagen.ParityLootTableProvider;
 import com.rosesause.bedrockparity.datagen.ParityRecipes;
 import com.rosesause.bedrockparity.item.ParityItems;
+import com.rosesause.bedrockparity.item.ParityPotions;
 import com.rosesause.bedrockparity.loot.ParityLootModifiers;
 import com.rosesause.bedrockparity.tileentity.DyeCauldronTile;
 import com.rosesause.bedrockparity.tileentity.ParityTileEntityTypes;
@@ -28,6 +29,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -50,12 +52,19 @@ public class BedrockParity {
         ParityItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityTileEntityTypes.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityLootModifiers.GLM.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ParityPotions.POTIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(new ParityGameRules.GameRuleEvents());
     }
 
+    public static IEventBus getModEventBus() {
+        return FMLJavaModLoadingContext.get().getModEventBus();
+    }
+
     public void setup(final FMLCommonSetupEvent event) {
-        ParityGameRules.registerGameRules();
+        event.enqueueWork(() -> {
+            ParityGameRules.registerGameRules();
+        });
     }
 
     @Mod.EventBusSubscriber(modid = BedrockParity.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -86,7 +95,12 @@ public class BedrockParity {
 
         @SubscribeEvent
         public static void blockColorEvent(ColorHandlerEvent.Block event) {
-            event.getBlockColors().register((state, reader, pos, color) -> reader != null && pos != null ? ((PotionCauldronTile)reader.getTileEntity(pos)).getPotionColor() : -1, ParityBlocks.POTION_CAULDRON.get());
+            event.getBlockColors().register((state, reader, pos, color) -> {
+                if (reader != null && pos != null) {
+                    return ((PotionCauldronTile) reader.getTileEntity(pos)).getPotionColor();
+                }
+                return -1;
+            }, ParityBlocks.POTION_CAULDRON.get());
             event.getBlockColors().register((state, reader, pos, color) -> reader != null && pos != null ? ((DyeCauldronTile)reader.getTileEntity(pos)).getDyeColor() : -1, ParityBlocks.DYE_CAULDRON.get());
 
             //TODO make look better ig
