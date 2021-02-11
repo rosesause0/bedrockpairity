@@ -40,8 +40,8 @@ public abstract class MixinSwampHitPiece extends ScatteredStructurePiece {
             setBlockState(seedReader, ParityBlocks.POTION_CAULDRON.get().getDefaultState().with(BlockStateProperties.LEVEL_0_3, i), 4, 2, 6, boundingBox);
             Iterator<Potion> itemIterator = ForgeRegistries.POTION_TYPES.iterator(); // Gets the registry iterator
             ArrayList<Potion> potions = new ArrayList<>();
-            for (; itemIterator.hasNext(); ) // Iterates through registry iterator
-            {
+            // Iterates through registry iterator
+            while (itemIterator.hasNext()) {
                 potions.add(itemIterator.next()); // Adds each element to a List (easier to get a random element from)
             }
             Random rand = new Random();
