@@ -3,32 +3,21 @@ package com.rosesause.bedrockparity.mixin;
 
 import com.rosesause.bedrockparity.block.ParityBlocks;
 import com.rosesause.bedrockparity.tileentity.PotionCauldronTile;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.ScatteredStructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.SwampHutPiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
@@ -51,9 +40,9 @@ public abstract class MixinSwampHitPiece extends ScatteredStructurePiece {
             setBlockState(seedReader, ParityBlocks.POTION_CAULDRON.get().getDefaultState().with(BlockStateProperties.LEVEL_0_3, i), 4, 2, 6, boundingBox);
             Iterator<Potion> itemIterator = ForgeRegistries.POTION_TYPES.iterator(); // Gets the registry iterator
             ArrayList<Potion> potions = new ArrayList<>();
-            for (Iterator<Potion> it = itemIterator; it.hasNext(); ) // Iterates through registry iterator
+            for (; itemIterator.hasNext(); ) // Iterates through registry iterator
             {
-                potions.add(it.next()); // Adds each element to a List (easier to get a random element from)
+                potions.add(itemIterator.next()); // Adds each element to a List (easier to get a random element from)
             }
             Random rand = new Random();
             Potion randomPotion = potions.get(rand.nextInt(potions.size() - 1)); // Chooses a random element from the List of Blocks
