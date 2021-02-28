@@ -6,6 +6,9 @@ import com.rosesause.bedrockparity.block.ParityJukeboxBlock;
 import com.rosesause.bedrockparity.commands.ParityGameRules;
 import com.rosesause.bedrockparity.datagen.ParityLootTableProvider;
 import com.rosesause.bedrockparity.datagen.ParityRecipes;
+import com.rosesause.bedrockparity.entity.BabySquidEntity;
+import com.rosesause.bedrockparity.entity.BabySquidRenderer;
+import com.rosesause.bedrockparity.entity.ParityEntities;
 import com.rosesause.bedrockparity.item.ParityItems;
 import com.rosesause.bedrockparity.item.ParityPotions;
 import com.rosesause.bedrockparity.loot.ParityLootModifiers;
@@ -17,6 +20,7 @@ import net.minecraft.block.SnowBlock;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.impl.GameRuleCommand;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.tileentity.JukeboxTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -31,13 +35,18 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Iterator;
 
 
 @Mod("bedrockparity")
@@ -47,13 +56,16 @@ public class BedrockParity {
     public static final String MOD_ID = "bedrockparity";
 
     public BedrockParity() {
+        Iterator
         LOGGER.debug("hey parity here");
         ParityBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityTileEntityTypes.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityLootModifiers.GLM.register(FMLJavaModLoadingContext.get().getModEventBus());
         ParityPotions.POTIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ParityEntities.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         MinecraftForge.EVENT_BUS.register(new ParityGameRules.GameRuleEvents());
     }
 
@@ -64,8 +76,16 @@ public class BedrockParity {
     public void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ParityGameRules.registerGameRules();
+            //TODO move this to ParityEntities
+            GlobalEntityTypeAttributes.put(ParityEntities.BABY_SQUID.get(), BabySquidEntity.BabySquidAttribues().create());
         });
     }
+
+    public void clientSetup(final FMLClientSetupEvent event) {
+        //TODO move this to ParityEntities
+        RenderingRegistry.registerEntityRenderingHandler(ParityEntities.BABY_SQUID.get(), BabySquidRenderer::new);
+    }
+
 
     @Mod.EventBusSubscriber(modid = BedrockParity.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeEvents {
@@ -95,12 +115,7 @@ public class BedrockParity {
 
         @SubscribeEvent
         public static void blockColorEvent(ColorHandlerEvent.Block event) {
-            event.getBlockColors().register((state, reader, pos, color) -> {
-                if (reader != null && pos != null) {
-                    return ((PotionCauldronTile) reader.getTileEntity(pos)).getPotionColor();
-                }
-                return -1;
-            }, ParityBlocks.POTION_CAULDRON.get());
+            event.getBlockColors().register((state, reader, pos, color) -> reader != null && pos != null ? ((PotionCauldronTile) reader.getTileEntity(pos)).getPotionColor() : -1, ParityBlocks.POTION_CAULDRON.get());
             event.getBlockColors().register((state, reader, pos, color) -> reader != null && pos != null ? ((DyeCauldronTile)reader.getTileEntity(pos)).getDyeColor() : -1, ParityBlocks.DYE_CAULDRON.get());
 
             //TODO make look better ig

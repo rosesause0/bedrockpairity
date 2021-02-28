@@ -56,12 +56,6 @@ public class PotionCauldronTile extends TileEntity {
     }
 
     public int getPotionColor() {
-        StringBuilder str = new StringBuilder("effects:");
-        for(int i = 0; i < potion.getEffects().size(); i ++){
-            str.append("\n");
-            str.append(potion.getEffects().get(i));
-        }
-        LogManager.getLogger().debug("\npotion:\n" + str + "\ncolor:" + PotionUtils.getPotionColor(potion));
         return PotionUtils.getPotionColor(potion);
     }
 

@@ -4,10 +4,11 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "bedrockparity.refmap.json",
   "mixins": [
-    "MixinSwampHitPiece",
     "MixinCommandBlockLogic",
+    "MixinContainerScreen",
     "MixinServerPlayNetHandler",
-    "MixinSnowBlock"
+    "MixinSnowBlock",
+    "MixinSwampHitPiece"
   ],
   "minVersion": "0.8"
 }

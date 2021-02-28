@@ -86,7 +86,6 @@ SOUNDS
 GAMEPLAY
 - clowds tinted red at sunset
 - variable rain
-- eating, blocking, using a bow, crossbow or trident or sneaking while sprinting makes the player stop sprinting.
 
 WORLDGEN
 - larger ravines 
@@ -100,16 +99,6 @@ INTERFACE
 - when the sun is looked the sky becomes darker
 - items held in inventory are larger
 - MORE VIEW BOBBING
-- ui overhall
-  - im talkin complete pairity on this like 100%
-  - even the creative inventory
-  - and the main menu
-  - and loading screen 
-  - and worlds and servers and create new world screen, everything 
-  - have the option to have preset texture packs for the world
-- skin creator, like character creator but more limited cuz u know
-  - also with this have the mojang preset skin packs 
-
 
 Things i may implement but other mods already do
 - snow in flowers and that falls
@@ -118,9 +107,3 @@ Things i may implement but other mods already do
 - biome color blocks are block by block 
 - all entites blink
 
-## Things that would be hell to implement
-- cross platform play
-
-## Things that would be cool as their own mod
-### this is just for me to log ideas, no promises
-- brewing potions in a cauldron
